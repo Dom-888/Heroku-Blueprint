@@ -9,7 +9,7 @@ if os.path.exists("env.py"):
 
 # create instance of flask and assign it to "app"
 app = Flask(__name__)
-app.config["MONGO_URI"] = os.getenv("MONGO_URI") # Variabile ambientale importata con l'ambaradam, è importante sostituire <password> con password e cluster0 con il nome del database
+app.config["MONGO_URI"] = os.getenv("connection_string") # Variabile ambientale importata con l'ambaradam, è importante sostituire <password> con password e cluster0 con il nome del database
 
 only_collection = PyMongo(app).db.myFirstDB # Variabile contenente l'unica collezione del database
 
