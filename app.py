@@ -11,23 +11,24 @@ if os.path.exists("env.py"):
 app = Flask(__name__)
 app.config["MONGO_URI"] = os.getenv("connection_string") # Variabile ambientale importata con l'ambaradam, è importante sostituire <password> con password e cluster0 con il nome del database
 
-only_collection = PyMongo(app).db.myFirstDB # Variabile contenente l'unica collezione del database
+coll = PyMongo(app).db.myFirstDB # Variabile contenente l'unica collezione del database
 
-# Collezione convertita in lista (si può fare meglio)
-collection_list = []
-coll = only_collection.find()
-for i in coll:
-    collection_list.append(i)
-
+# Order the collection in a list
+coll_list = []
+for dict in coll.find():
+    for key, value in dict.items():
+        if key != "_id":
+            coll_list.append(key + " : " + str(value))
 
 # landing page
 @app.route('/') 
 @app.route('/first_function')
 def first_function():
-    return render_template("index.html", output = collection_list)
+    return render_template("index.html", output = coll_list)
 
 if __name__ == '__main__':  
     app.run(host=os.getenv("IP", "0.0.0.0"),
-    port=int(os.getenv("PORT", "5000")), debug=True) # Rimuovere dubug=True prima di pubblicare
+    port=int(os.getenv("PORT", "5000")), debug=True) # Remove dubug=True before publishing
+
 
 
